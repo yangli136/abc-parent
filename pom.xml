@@ -13,12 +13,12 @@
 
   <groupId>org.abcframework</groupId>
   <artifactId>abc-parent</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.3-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>abc-parent</name>
   <description>Parent POM for Spring Boot based Application</description>
 
-  <!-- Latest versions updated on 10/08/2019 -->
+  <!-- Latest versions updated on 10/20/2019 -->
   <properties>
     <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss'Z'</maven.build.timestamp.format>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -27,8 +27,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <!-- Spring Boot dependencies -->
-    <!-- spring.version: 5.1.7.RELEASE -->
-    <spring-boot.version>2.1.9.RELEASE</spring-boot.version>
+    <!-- spring.version: 5.2.0.RELEASE -->
+    <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
 
     <!-- Test scope -->
     <awaitility.version>4.0.1</awaitility.version>
@@ -38,7 +38,10 @@
     <junit-vintage-engine.version>5.5.2</junit-vintage-engine.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
     <spotless-maven-plugin.version>1.25.0</spotless-maven-plugin.version>
+    <spring-boot-maven-plugin.version>2.2.0.RELEASE</spring-boot-maven-plugin.version>
+
   </properties>
 
   <dependencyManagement>
@@ -157,12 +160,12 @@
   <build>
     <resources>
       <resource>
-        <directory>src/main/resources</directory>
         <filtering>true</filtering>
+        <directory>${basedir}/src/main/resources</directory>
       </resource>
       <resource>
-        <directory>src/test/resources</directory>
         <filtering>true</filtering>
+        <directory>${basedir}/src/main/resources</directory>
       </resource>
     </resources>
     <plugins>
@@ -189,11 +192,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin.version}</version>
-        <configuration>
-          <source>${maven.compiler.source}</source>
-          <target>${maven.compiler.source}</target>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -211,6 +209,73 @@
         </configuration>
       </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <source>${maven.compiler.source}</source>
+            <target>${maven.compiler.source}</target>
+            <parameters>true</parameters>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven-failsafe-plugin.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>integration-test</goal>
+                <goal>verify</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>pl.project13.maven</groupId>
+          <artifactId>git-commit-id-plugin</artifactId>
+          <executions>
+            <execution>
+              <goals>
+                <goal>revision</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <verbose>true</verbose>
+            <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
+            <generateGitPropertiesFile>true</generateGitPropertiesFile>
+            <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring-boot-maven-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>repackage</id>
+              <goals>
+                <goal>repackage</goal>
+                <goal>build-info</goal><!-- used by Spring Boot Actuator info -->
+              </goals>
+              <configuration>
+                <attach>false</attach>
+              </configuration>
+            </execution>
+          </executions>
+          <configuration>
+            <mainClass>${start-class}</mainClass>
+            <layout>ZIP</layout>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
 </project>
