@@ -23,3 +23,5 @@ The following sample parent POM provides the following customized features:
 1. added unit test dependencies, JUnit 5 is used as unit test engine.
 1. enabled resource filtering
 1. configured Google style check
+1. configured spring-boot-maven-plugin to work with Spring Boot Actuator, build info and GIT commit info will be generated 
+   by default.
