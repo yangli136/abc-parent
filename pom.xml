@@ -30,15 +30,12 @@
     <!-- spring.version: 5.2.0.RELEASE -->
     <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
 
-    <!-- Test scope -->
-    <awaitility.version>4.0.1</awaitility.version>
-
     <!-- Maven plugins -->
     <google-format.version>1.7</google-format.version>
     <junit-vintage-engine.version>5.5.2</junit-vintage-engine.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <spotless-maven-plugin.version>1.25.0</spotless-maven-plugin.version>
     <spring-boot-maven-plugin.version>2.2.0.RELEASE</spring-boot-maven-plugin.version>
 
@@ -152,7 +149,6 @@
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility</artifactId>
-      <version>${awaitility.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -253,13 +249,18 @@
             <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
           </configuration>
         </plugin>
+        <!-- * The spring-boot-maven-plugin repackages a jar or war that is built during the package phase of the Maven lifecycle,
+               including any provided dependencies that are defined in the project. Devtools is automatically excluded by default.
+             * By default the application is executed in a forked process and setting properties on the command-line will not 
+               affect the application. If you need to specify some JVM arguments (i.e. for debugging purposes), you can use the 
+               jvmArguments parameter.
+         -->
         <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <version>${spring-boot-maven-plugin.version}</version>
           <executions>
             <execution>
-              <id>repackage</id>
               <goals>
                 <goal>repackage</goal>
                 <goal>build-info</goal><!-- used by Spring Boot Actuator info -->
