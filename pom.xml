@@ -31,12 +31,13 @@
     <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
 
     <!-- Maven plugins -->
+    <git-commit-id-plugin.version>3.0.1</git-commit-id-plugin.version>
     <google-format.version>1.7</google-format.version>
     <junit-vintage-engine.version>5.5.2</junit-vintage-engine.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-    <spotless-maven-plugin.version>1.25.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>1.25.1</spotless-maven-plugin.version>
     <spring-boot-maven-plugin.version>2.2.0.RELEASE</spring-boot-maven-plugin.version>
 
   </properties>
@@ -236,6 +237,7 @@
         <plugin>
           <groupId>pl.project13.maven</groupId>
           <artifactId>git-commit-id-plugin</artifactId>
+          <version>${git-commit-id-plugin.version}</version>
           <executions>
             <execution>
               <goals>
